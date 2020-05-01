@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="JWT Auth Example to run atreugo server with basic JWT authentication. 
+main.go
+package main import ( &#34;fmt&#34; &#34;github.com/savsgio/atreugo/v11&#34; &#34;github.com/savsgio/go-logger/v2&#34; &#34;github.com/valyala/fasthttp&#34; ) func init() { //nolint:gochecknoinits 	logger.SetLevel(logger.DEBUG) } func main() { config := atreugo.Config{ Addr: &#34;0.0.0.0:8000&#34;, } server := atreugo.New(config) // Register authentication middleware at first of all 	server.UseBefore(authMiddleware) // Register index route 	server.GET(&#34;/&#34;, func(ctx *atreugo.RequestCtx) error { return ctx.HTTPResponse(fmt.Sprintf(`&lt;h1&gt;You are login with JWT&lt;/h1&gt; JWT cookie value: %s`, ctx."><meta property="og:title" content="JWT Auth" />
+<meta property="og:description" content="JWT Auth Example to run atreugo server with basic JWT authentication. 
+main.go
+package main import ( &#34;fmt&#34; &#34;github.com/savsgio/atreugo/v11&#34; &#34;github.com/savsgio/go-logger/v2&#34; &#34;github.com/valyala/fasthttp&#34; ) func init() { //nolint:gochecknoinits 	logger.SetLevel(logger.DEBUG) } func main() { config := atreugo.Config{ Addr: &#34;0.0.0.0:8000&#34;, } server := atreugo.New(config) // Register authentication middleware at first of all 	server.UseBefore(authMiddleware) // Register index route 	server.GET(&#34;/&#34;, func(ctx *atreugo.RequestCtx) error { return ctx.HTTPResponse(fmt.Sprintf(`&lt;h1&gt;You are login with JWT&lt;/h1&gt; JWT cookie value: %s`, ctx." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/examples/jwt_auth/" />
+<meta property="article:published_time" content="2020-05-01T15:28:46+09:00" />
+<meta property="article:modified_time" content="2020-05-01T15:28:46+09:00" />
+<title>JWT Auth | Atreugo</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.6df681b0bb21155cba49f6078e3559216772d8e03e780d240c73ea21817ed5e5.css" integrity="sha256-bfaBsLshFVy6SfYHjjVZIWdy2OA&#43;eA0kDHPqIYF&#43;1eU=">
+<script defer src="/en.search.min.f56005ee999511ca94784c1e8df7633c375e6557c7c2caa71c7ce97ac5db117a.js" integrity="sha256-9WAF7pmVEcqUeEwejfdjPDdeZVfHwsqnHHzpesXbEXo="></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>Atreugo</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+  
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <span>Examples</span>
+  
+
+          
+  
+  
+  
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+    <a href="/examples/jwt_auth/" class="active">JWT Auth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+    <a href="/examples/middlewares/" class="">Middlewares</a>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+        </li>
+      
+    
+  </ul>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>JWT Auth</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#jwt-auth">JWT Auth</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="jwt-auth">JWT Auth</h2>
+<p>Example to run atreugo server with basic JWT authentication. <a href="https://github.com/atreugo/examples/tree/master/jwt_auth"><img src="https://img.icons8.com/officexs/16/000000/link.png" alt="Link" /></a></p>
+<p><em>main.go</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/savsgio/atreugo/v11&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/savsgio/go-logger/v2&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/valyala/fasthttp&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() { <span style="color:#75715e">//nolint:gochecknoinits
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">SetLevel</span>(<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">DEBUG</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">config</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">atreugo</span>.<span style="color:#a6e22e">Config</span>{
+		<span style="color:#a6e22e">Addr</span>: <span style="color:#e6db74">&#34;0.0.0.0:8000&#34;</span>,
+	}
+	<span style="color:#a6e22e">server</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">atreugo</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">config</span>)
+
+	<span style="color:#75715e">// Register authentication middleware at first of all
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">UseBefore</span>(<span style="color:#a6e22e">authMiddleware</span>)
+
+	<span style="color:#75715e">// Register index route
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">atreugo</span>.<span style="color:#a6e22e">RequestCtx</span>) <span style="color:#66d9ef">error</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">HTTPResponse</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">`&lt;h1&gt;You are login with JWT&lt;/h1&gt;
+</span><span style="color:#e6db74">				JWT cookie value: %s`</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Cookie</span>(<span style="color:#e6db74">&#34;atreugo_jwt&#34;</span>)))
+	})
+
+	<span style="color:#75715e">// Register login route
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/login&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">atreugo</span>.<span style="color:#a6e22e">RequestCtx</span>) <span style="color:#66d9ef">error</span> {
+		<span style="color:#a6e22e">qUser</span> <span style="color:#f92672">:=</span> []byte(<span style="color:#e6db74">&#34;savsgio&#34;</span>)
+		<span style="color:#a6e22e">qPasswd</span> <span style="color:#f92672">:=</span> []byte(<span style="color:#e6db74">&#34;mypasswd&#34;</span>)
+
+		<span style="color:#a6e22e">jwtCookie</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Cookie</span>(<span style="color:#e6db74">&#34;atreugo_jwt&#34;</span>)
+
+		<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">jwtCookie</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#a6e22e">tokenString</span>, <span style="color:#a6e22e">expireAt</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">generateToken</span>(<span style="color:#a6e22e">qUser</span>, <span style="color:#a6e22e">qPasswd</span>)
+
+			<span style="color:#75715e">// Set cookie for domain
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">cookie</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fasthttp</span>.<span style="color:#a6e22e">AcquireCookie</span>()
+			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">fasthttp</span>.<span style="color:#a6e22e">ReleaseCookie</span>(<span style="color:#a6e22e">cookie</span>)
+
+			<span style="color:#a6e22e">cookie</span>.<span style="color:#a6e22e">SetKey</span>(<span style="color:#e6db74">&#34;atreugo_jwt&#34;</span>)
+			<span style="color:#a6e22e">cookie</span>.<span style="color:#a6e22e">SetValue</span>(<span style="color:#a6e22e">tokenString</span>)
+			<span style="color:#a6e22e">cookie</span>.<span style="color:#a6e22e">SetExpire</span>(<span style="color:#a6e22e">expireAt</span>)
+			<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Response</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">SetCookie</span>(<span style="color:#a6e22e">cookie</span>)
+		}
+
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">RedirectResponse</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Response</span>.<span style="color:#a6e22e">StatusCode</span>())
+	})
+
+	<span style="color:#75715e">// Run
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">ListenAndServe</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p><em>auth_utils.go</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;time&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/dgrijalva/jwt-go&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/savsgio/go-logger/v2&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">jwtSignKey</span> = []byte(<span style="color:#e6db74">&#34;TestForFasthttpWithJWT&#34;</span>)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">userCredential</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Username</span> []<span style="color:#66d9ef">byte</span> <span style="color:#e6db74">`json:&#34;username&#34;`</span>
+	<span style="color:#a6e22e">Password</span> []<span style="color:#66d9ef">byte</span> <span style="color:#e6db74">`json:&#34;password&#34;`</span>
+	<span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">StandardClaims</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">generateToken</span>(<span style="color:#a6e22e">username</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">password</span> []<span style="color:#66d9ef">byte</span>) (<span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>) {
+	<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Debugf</span>(<span style="color:#e6db74">&#34;Create new token for user %s&#34;</span>, <span style="color:#a6e22e">username</span>)
+
+	<span style="color:#a6e22e">expireAt</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Minute</span>)
+
+	<span style="color:#75715e">// Embed User information to `token`
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">newToken</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">NewWithClaims</span>(<span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">SigningMethodHS512</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">userCredential</span>{
+		<span style="color:#a6e22e">Username</span>: <span style="color:#a6e22e">username</span>,
+		<span style="color:#a6e22e">Password</span>: <span style="color:#a6e22e">password</span>,
+		<span style="color:#a6e22e">StandardClaims</span>: <span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">StandardClaims</span>{
+			<span style="color:#a6e22e">ExpiresAt</span>: <span style="color:#a6e22e">expireAt</span>.<span style="color:#a6e22e">Unix</span>(),
+		},
+	})
+
+	<span style="color:#75715e">// token -&gt; string. Only server knows the secret.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tokenString</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newToken</span>.<span style="color:#a6e22e">SignedString</span>(<span style="color:#a6e22e">jwtSignKey</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tokenString</span>, <span style="color:#a6e22e">expireAt</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">validateToken</span>(<span style="color:#a6e22e">requestToken</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">Token</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">userCredential</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Debug</span>(<span style="color:#e6db74">&#34;Validating token...&#34;</span>)
+
+	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">userCredential</span>{}
+	<span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">ParseWithClaims</span>(<span style="color:#a6e22e">requestToken</span>, <span style="color:#a6e22e">user</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">token</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">jwt</span>.<span style="color:#a6e22e">Token</span>) (<span style="color:#66d9ef">interface</span>{}, <span style="color:#66d9ef">error</span>) {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">jwtSignKey</span>, <span style="color:#66d9ef">nil</span>
+	})
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p><em>middlewares.go</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;errors&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/savsgio/atreugo/v11&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/valyala/fasthttp&#34;</span>
+)
+
+<span style="color:#75715e">// checkTokenMiddleware middleware to check jwt token authorization
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">authMiddleware</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">atreugo</span>.<span style="color:#a6e22e">RequestCtx</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#75715e">// Avoid middleware when you are going to login view
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> string(<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Path</span>()) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;/login&#34;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Next</span>()
+	}
+
+	<span style="color:#a6e22e">jwtCookie</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Cookie</span>(<span style="color:#e6db74">&#34;atreugo_jwt&#34;</span>)
+
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">jwtCookie</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">ErrorResponse</span>(<span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;login required&#34;</span>), <span style="color:#a6e22e">fasthttp</span>.<span style="color:#a6e22e">StatusForbidden</span>)
+	}
+
+	<span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">validateToken</span>(string(<span style="color:#a6e22e">jwtCookie</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">Valid</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">ErrorResponse</span>(<span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;your session is expired, login again please&#34;</span>), <span style="color:#a6e22e">fasthttp</span>.<span style="color:#a6e22e">StatusForbidden</span>)
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Next</span>()
+}
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#jwt-auth">JWT Auth</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

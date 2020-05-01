@@ -1,0 +1,8 @@
+baseURL = "http://example.org/"
+publishDir = "docs"
+languageCode = "en-us"
+title = "Atreugo"
+theme = "book"
+
+[params]
+    BookSection = '*'

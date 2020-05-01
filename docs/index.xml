@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Index on Atreugo</title>
+    <link>http://example.org/</link>
+    <description>Recent content in Index on Atreugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2020 15:28:46 +0900</lastBuildDate>
+    
+	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JWT Auth</title>
+      <link>http://example.org/examples/jwt_auth/</link>
+      <pubDate>Fri, 01 May 2020 15:28:46 +0900</pubDate>
+      
+      <guid>http://example.org/examples/jwt_auth/</guid>
+      <description>JWT Auth Example to run atreugo server with basic JWT authentication. 
+main.go
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/savsgio/atreugo/v11&amp;#34; &amp;#34;github.com/savsgio/go-logger/v2&amp;#34; &amp;#34;github.com/valyala/fasthttp&amp;#34; ) func init() { //nolint:gochecknoinits 	logger.SetLevel(logger.DEBUG) } func main() { config := atreugo.Config{ Addr: &amp;#34;0.0.0.0:8000&amp;#34;, } server := atreugo.New(config) // Register authentication middleware at first of all 	server.UseBefore(authMiddleware) // Register index route 	server.GET(&amp;#34;/&amp;#34;, func(ctx *atreugo.RequestCtx) error { return ctx.HTTPResponse(fmt.Sprintf(`&amp;lt;h1&amp;gt;You are login with JWT&amp;lt;/h1&amp;gt; JWT cookie value: %s`, ctx.</description>
+    </item>
+    
+    <item>
+      <title>Middlewares</title>
+      <link>http://example.org/examples/middlewares/</link>
+      <pubDate>Fri, 01 May 2020 11:01:23 +0900</pubDate>
+      
+      <guid>http://example.org/examples/middlewares/</guid>
+      <description>CORS Example to run Atreugo server with CORS middleware 
+main.go
+package main import ( &amp;#34;github.com/atreugo/middlewares/cors&amp;#34; &amp;#34;github.com/savsgio/atreugo/v11&amp;#34; ) func main() { config := atreugo.Config{ Addr: &amp;#34;0.0.0.0:8001&amp;#34;, } server := atreugo.New(config) cors := cors.New(cors.Config{ AllowedOrigins: []string{&amp;#34;http://localhost:8001&amp;#34;, &amp;#34;null&amp;#34;}, AllowedHeaders: []string{&amp;#34;Content-Type&amp;#34;, &amp;#34;X-Custom&amp;#34;}, AllowedMethods: []string{&amp;#34;GET&amp;#34;, &amp;#34;POST&amp;#34;, &amp;#34;PUT&amp;#34;, &amp;#34;DELETE&amp;#34;}, ExposedHeaders: []string{&amp;#34;Content-Length&amp;#34;, &amp;#34;Authorization&amp;#34;}, AllowCredentials: true, AllowMaxAge: 5600, }) server.UseAfter(cors) server.GET(&amp;#34;/&amp;#34;, func(ctx *atreugo.RequestCtx) error { return ctx.JSONResponse(atreugo.JSON{&amp;#34;Method&amp;#34;: &amp;#34;GET&amp;#34;}) }) server.POST(&amp;#34;/&amp;#34;, func(ctx *atreugo.RequestCtx) error { return ctx.JSONResponse(atreugo.JSON{&amp;#34;Method&amp;#34;: &amp;#34;POST&amp;#34;}) }) server.</description>
+    </item>
+    
+  </channel>
+</rss>
